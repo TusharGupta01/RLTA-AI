@@ -1,8 +1,9 @@
 ### Description
 
 
-### Deployment Notes
+### Development Notes
 
 
 ### Checklist
-- [ ] Tested properly 
+- [ ] Code is working correctly.
+- [ ] Tested properly.
