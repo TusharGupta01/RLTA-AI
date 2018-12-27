@@ -5,6 +5,18 @@ import pydash as ps
 
 class DAgger:
 	def __init__(self):
+		"""
+			Initialize Dataset (expert)
+			Initialize π1 to any policy in π.
+			for i = 1 to N do
+				Let πi = ßiπ* + (1 - ßi)πi.
+				Sample T-step trajectories using πi.
+				Get dataset Di = {(s, π*(s))} of visited states by πi and actions given by expert.
+				Aggregate datasets: D <- D U Di.
+				Train classifier πi+1 on D (or use online learner to get πi+1 given new data Di).
+			end for
+			Return best ˆ⇡i on validation.
+		"""
 		pass
 
 	def run(self, config, agent, expert):
@@ -45,19 +57,16 @@ class DAgger:
 			config.env.render()
 			obs = env.reset()
 			done = False
-			totalr = 0
+			reward = 0
 			steps = 0
-			while not done:
-				action = agent(obs[None, :])
-				action = action.reshape(-1)
+			while not done || max_steps >= steps:
+				action = agent(obs[None, :]).reshape(-1)
 				observations.append(obs)
 				actions.append(action)
 				obs, r, done, _ = env.step(action)
-				totalr += r
+				reward += r
 				steps += 1
-				if steps >= max_steps:
-					break
-			returns.append(totalr)
+			returns.append(reward)
 
 		avg_mean, avg_std = np.mean(returns), np.std(returns)
 		observations = np.array(observations).astype(np.float32)
