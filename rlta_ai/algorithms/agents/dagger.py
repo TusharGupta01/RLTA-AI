@@ -59,7 +59,7 @@ class DAgger:
 			done = False
 			reward = 0
 			steps = 0
-			while not done || max_steps >= steps:
+			while not done or max_steps >= steps:
 				action = agent(obs[None, :]).reshape(-1)
 				observations.append(obs)
 				actions.append(action)
