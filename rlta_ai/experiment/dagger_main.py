@@ -1,8 +1,8 @@
 import gym
 import torch
 from load_policy import load_policy
-from algorithm.model import MLPNet
-from algorithm.agent.DAgger import *
+from agents.model.mlp import MLPNet
+from agents.algorithms.dagger import DAgger
 
 class Config():
     seed = 3
@@ -35,8 +35,8 @@ def main():
     agent = MLPNet(env.observation_space.shape[0], env.action_space.shape[0]).to(config.device)
     expert = load_policy(config.expert_path + "Humanoid-v2" + '.pkl')
     method = config.method
-
-    agent = train(config, agent, expert)
+    dagger = DAgger()
+    agent = dagger.train(config, agent, expert)
 
     
     avrg_mean, avrg_std = Eval(config, expert)
