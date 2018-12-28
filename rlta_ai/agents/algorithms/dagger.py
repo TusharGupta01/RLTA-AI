@@ -32,6 +32,16 @@ class DAgger:
 	        return action.cpu().numpy()
 	    return fn
 
+	def show_metric(self, config, agent):
+		avg_mean, avg_std = self.eval(config, self.agent_wapper(config, agent))
+        avg_loss = np.mean(loss_his)
+        loss_his = []
+        print('[epoch {}  step {}] loss: {:.4f}  r_mean: {:.2f}  r_std: {:.2f}'.format(
+            k + 1, step, avg_loss, avg_mean, avg_std))
+
+        avg_reward = avg_mean - avg_std
+        return avg_reward
+
 	def fit_dataset(self, config, agent, dataset, n_epochs):
 	    optimizer = optim.Adam(agent.parameters(), lr=config.lr, weight_decay=config.L2)
 	    loss_fn = nn.MSELoss()
@@ -54,17 +64,10 @@ class DAgger:
 	            loss_his.append(loss.item())
 
 	            if step % config.eval_steps == 0:
-	                avg_mean, avg_std = self.Eval(config, self.agent_wapper(config, agent))
-	                avg_loss = np.mean(loss_his)
-	                loss_his = []
-	                print('[epoch {}  step {}] loss: {:.4f}  r_mean: {:.2f}  r_std: {:.2f}'.format(
-	                    k + 1, step, avg_loss, avg_mean, avg_std))
-
-	                avg_reward = avg_mean - avg_std
+	                avg_reward = show_metric(config, agent)
 	                if best_reward is None or best_reward < avg_reward:
-	                    best_reward = avg_reward
-	                    self.save_model(config, agent, config.model_save_path)
-	                
+			            best_reward = avg_reward
+			            self.save_model(config, agent, config.model_save_path)
 	            step += 1
 	    
 	    self.load_model(config, agent, config.model_save_path)
@@ -90,7 +93,7 @@ class DAgger:
 			# add new data to dataset
 			dataset = ConcatDataset([dataset, new_data])
 
-			avg_mean, avg_std = Eval(config, self.agent_wapper(config, agent))
+			avg_mean, avg_std = self.eval(config, self.agent_wapper(config, agent))
 			print('[DAgger iter {}] r_mean: {:.2f}  r_std: {:.2f}'.format(k + 1, avg_mean, avg_std))
 
 			
@@ -124,7 +127,7 @@ class DAgger:
 
 		return observations, actions, avg_mean, avg_std
 
-	def Eval(self, config, agent):
+	def eval(self, config, agent):
 	    *_, avg_mean, avg_std = self.run_agent(config, agent, config.n_eval_rollouts)
 
 	    return avg_mean, avg_std
