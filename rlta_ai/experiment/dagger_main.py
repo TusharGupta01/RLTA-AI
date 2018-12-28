@@ -8,19 +8,17 @@ class Config():
     seed = 3
     envname = 'Humanoid-v1'
     env = gym.make(envname)
-    method = 'DA'
     device = torch.device('cpu')
     expert_path = './experts/'
     model_save_path = './models/'
-    n_expert_rollouts = 30 # number of rollouts from expert
-    n_dagger_rollouts = 10 # number of new rollouts from learned model for a DAgger iteration
-    n_dagger_iter = 10 # number of DAgger iterations
-    n_eval_rollouts = 10 # number of rollouts for evaluating a policy
+    n_expert_rollouts = 30
+    n_dagger_rollouts = 10
+    n_dagger_iter = 10
+    n_eval_rollouts = 10
     L2 = 0.00001
     lr = 0.0001
     epochs = 20
     batch_size = 64
-
     eval_steps = 500
     
 
@@ -39,10 +37,10 @@ def main():
     agent = dagger.train(config, agent, expert)
 
     
-    avrg_mean, avrg_std = Eval(config, expert)
+    avrg_mean, avrg_std = dagger.eval(config, expert)
     print('[expert] avrg_mean:{:.2f}  avrg_std:{:.2f}'.format(avrg_mean, avrg_std))
         
-    avrg_mean, avrg_std = Eval(config, agent)
+    avrg_mean, avrg_std = dagger.eval(config, agent)
     print('[agent] avrg_mean:{:.2f}  avrg_std:{:.2f}'.format(avrg_mean, avrg_std))
 
 if __name__ == '__main__':

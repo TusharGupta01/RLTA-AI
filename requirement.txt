@@ -1,0 +1,3 @@
+torch
+torchvision
+mujoco-py==0.5.7
