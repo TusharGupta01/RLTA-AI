@@ -332,3 +332,6 @@ Model Predictive Control](http://deepmpc.cs.cornell.edu/DeepMPC.pdf), I. Lenz, e
   * [Deep Successor Reinforcement Learning](http://arxiv.org/abs/1606.02396), T. D. Kulkarni et al., *arXiv*, 2016.
   * [Hierarchical Reinforcement Learning using Spatio-Temporal Abstractions and Deep Neural Networks](https://arxiv.org/abs/1605.05359), R. Krishnamurthy et al., *arXiv*, 2016.
   * [Hierarchical Deep Reinforcement Learning: Integrating Temporal Abstraction and Intrinsic Motivation](https://arxiv.org/abs/1604.06057), T. D. Kulkarni et al., *arXiv*, 2016.
+
+## Before Reinforcement learning
+  * [A Reduction of Imitation Learning and Structured Prediction to No-Regret Online Learning](https://arxiv.org/pdf/1011.0686.pdf), Stéphane Ross et al., *NIPS*, 2015.
